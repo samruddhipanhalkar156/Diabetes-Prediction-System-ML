@@ -35,7 +35,7 @@ os.makedirs(RESULTS_DIR, exist_ok=True)
 # =====================
 # Load Dataset
 # =====================
-print("📥 Loading CDC Diabetes Health Indicators dataset...")
+print(" Loading CDC Diabetes Health Indicators dataset...")
 from ucimlrepo import fetch_ucirepo
 dataset = fetch_ucirepo(id=891)
 
@@ -55,7 +55,7 @@ if "Diabetes_binary" in y.columns:
 # =====================
 # Balanced Sampling (Max 5000 per class)
 # =====================
-print("⚖️ Sampling 5000 per class for balance...")
+print(" Sampling 5000 per class for balance...")
 df = pd.concat([X, y], axis=1)
 
 class_0 = df[df["Diabetes_binary"] == 0]
@@ -70,7 +70,7 @@ df_balanced = pd.concat([class_0_sample, class_1_sample])
 X = df_balanced.drop(columns=["Diabetes_binary"])
 y = df_balanced["Diabetes_binary"]
 
-print(f"✅ Dataset size after sampling: {X.shape}, Class balance: {y.value_counts().to_dict()}")
+print(f" Dataset size after sampling: {X.shape}, Class balance: {y.value_counts().to_dict()}")
 
 # =====================
 # EDA
@@ -99,7 +99,7 @@ if "BMI" in X.columns:
 # =====================
 # Scaling
 # =====================
-print("⚖️ Scaling features...")
+print(" Scaling features...")
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
@@ -116,7 +116,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 # =====================
 # Models & Parameters (Simplified SVM for speed)
 # =====================
-print("🤖 Starting Model Training...")
+print(" Starting Model Training...")
 models = {
     "LogisticRegression": (
         LogisticRegression(max_iter=1000),
@@ -143,7 +143,7 @@ results = []
 # =====================
 def train_and_evaluate(X_train, X_test, y_train, y_test):
     for name, (model, params) in models.items():
-        print(f"🔍 Training {name}...")
+        print(f" Training {name}...")
         grid = GridSearchCV(
             model,
             params,
@@ -198,4 +198,5 @@ results_df = pd.DataFrame(results)
 results_file = os.path.join(RESULTS_DIR, f"model_results_{dt.now().strftime('%y_%b_%d_%H_%M')}.xlsx")
 results_df.to_excel(results_file, index=False)
 
-print("✅ Pipeline completed! Models and results are saved.")
+print(" Pipeline completed! Models and results are saved.")
+
